@@ -1,0 +1,7 @@
+Database,Name in App,Parquet filename
+Bronchoalveolar_Cells,BAL,ca_ba.parquet 
+Bronchial Epithelium Brush,BroncEpiBrush,ca_brep.parquet
+CD4 Stim,CD4Stim,cc_s.parquet
+CD4 UnStim,CD4Unstim,cc_unstim.parquet
+Alveolar Macrophages,AlvMacphage,ch_am.parquet
+Pax RNA,PaxRNA,comb.parquet

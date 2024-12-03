@@ -1,0 +1,29 @@
+name: ggipack
+channels:
+    - conda-forge
+    - bioconda
+dependencies:
+    # - r-base==4.0.3
+    - r-jbrowser ## == 0.10.2
+    - r-duckdb # 1.0.0_1 
+    - r-devtools #==2.4.5
+    - r-dplyr #==1.1.0
+    - r-markdown #==1.5
+    - r-pkgdown #==2.0.7
+    - r-randomcolor #==1.1.0
+    - r-roxygen2 #==7.2.3
+    - r-rversions #==2.1.2
+    - r-shiny #==1.7.4
+    - r-shinybs #==0.61.1
+    - r-shinycssloaders #==1.0.0
+    - r-shinydashboard #==0.7.2
+    - r-shinyjs #==2.1.0
+    - r-shinywidgets #==0.7.6
+    - r-testthat #==3.1.6
+    - r-urlchecker #==1.0.1
+    - bioconductor-genomicranges #==1.50.0
+    - bioconductor-iranges #==2.32.0
+    - bioconductor-s4vectors #==0.36.0
+    - bioconductor-genomeinfodb #==1.34.8
+    - bioconductor-genomicfeatures #==1.50.2
+    - bioconductor-genomicalignments #==1.34.0
