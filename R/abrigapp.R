@@ -11,10 +11,10 @@
 #' if (interactive()){
 #' utils::data("gloc_hg19", package = "GGIpack")
 #' con = DBI::dbConnect(duckdb::duckdb())
-#' tinyapp2(con, gloc_hg19)
+#' abrigapp(con, gloc_hg19)
 #' }
 #' @export
-tinyapp2 = function(con, genelocs) {
+abrigapp = function(con, genelocs) {
  pfiles <<- ABRIGparquet_paths()
  bpPadding = 30000
  utils::data("geneNames", package = "GGIpack")
@@ -160,7 +160,7 @@ tinyapp2 = function(con, genelocs) {
     tabPanel("about", helpText(h3("GGIpack Overview")),
              br(),
              p(sprintf(
-               "GGIpack tinyapp2 version %s.  This app uses parquet files made 
+               "GGIpack abrigapp version %s.  This app uses parquet files made 
                  from the abrig  data release on 05/15/2023. This new data release merges the 
                  population data for each of the cell types together thus there is no more choice 
                  for population since there is no way to separate the data anymore. The original
@@ -192,5 +192,5 @@ tinyapp2 = function(con, genelocs) {
  }#end of server
  runApp(list(ui=ui, server=server))
  DBI::dbDisconnect(con)
-} #end of tinyapp2
+} #end of abrigapp
 
