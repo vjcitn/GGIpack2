@@ -20,7 +20,7 @@ field from genelocs argument.
 }
 \examples{
 if (interactive()){
-utils::data("gloc_hg19", package = "GGIpack")
+utils::data("gloc_hg19", package = "GGIpack2")
 con = DBI::dbConnect(duckdb::duckdb())
 abrigapp(con, gloc_hg19)
 }

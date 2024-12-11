@@ -16,6 +16,6 @@ a data set that can be used to graph in JBrowseR.
 Takes in a path to a data table and coheres the data into the proper format
 }
 \examples{
-path = system.file("extdata/Alveolar_Macrophages_IS.MICA_ILMN_3241692.CAU.meta", package="GGIpack")
+path = system.file("extdata/Alveolar_Macrophages_IS.MICA_ILMN_3241692.CAU.meta", package="GGIpack2")
 head(checkData(path = path))
 }

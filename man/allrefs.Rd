@@ -22,7 +22,7 @@ A list of data table by type for the given gene.
 Get all the datasets from each of the six celltypes in the ABRIG data.
 }
 \examples{
-utils::data("gloc_hg19", package = "GGIpack")
+utils::data("gloc_hg19", package = "GGIpack2")
 con = DBI::dbConnect(duckdb::duckdb())
 allrefs( con =con, gene = 'DSP', pfiles =ABRIGparquet_paths(), genelocs = gloc_hg19)
 DBI::dbDisconnect(con)

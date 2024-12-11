@@ -11,7 +11,7 @@
 assoc_by_sym = function( gtexres, sym = "ORMDL3" ) {
  # assumes number of associations for a gene is manageable as data.frame
  stopifnot(is(gtexres, "GTExresource"))
- data("gloc_hg19", package="GGIpack")
+ data("gloc_hg19", package="GGIpack2")
  mid = which(gloc_hg19$symbol == sym)
  stopifnot(length(mid)>=1)
  mid = names(gloc_hg19[mid[1]]) # should message if length(mid)>1
@@ -44,7 +44,7 @@ assoc_by_sym = function( gtexres, sym = "ORMDL3" ) {
 assoc_by_pos = function( gtexres, chr="17", pos=39e6, radius=1e6) {
  # assumes number of associations for a gene is manageable as data.frame
  stopifnot(is(gtexres, "GTExresource"))
- data("gloc_hg19", package="GGIpack")
+ data("gloc_hg19", package="GGIpack2")
  tmp = gtexres@tbl |> dplyr::filter(seqnames == chr & start >= (pos-radius) &
           end <= (pos+radius)) |> as.data.frame()
  dplyr::mutate(tmp, pos=pos, radius=radius)

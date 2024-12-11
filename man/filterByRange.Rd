@@ -26,7 +26,7 @@ filter a GGI (ABRIGresource) instance by range
 \examples{
 con = DBI::dbConnect(duckdb::duckdb())
 ll = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
-utils::data("gloc_hg19", package = "GGIpack")
+utils::data("gloc_hg19", package = "GGIpack2")
 kk <- filterByRange(ll, gloc_hg19, "DSP", ggr_field="gene_name")
 print(kk)
 DBI::dbDisconnect(con)

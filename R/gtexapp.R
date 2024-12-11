@@ -8,8 +8,8 @@
 #' options(ask=oldask)
 #' @export
 gtexapp = function() {
- data("gloc_hg19", package="GGIpack")
- data("ensg", package="GGIpack")
+ data("gloc_hg19", package="GGIpack2")
+ data("ensg", package="GGIpack2")
  ensg = ensg[order(names(ensg))]
 
 # set up data resources
@@ -82,7 +82,7 @@ gtexapp = function() {
       par(mfrow=c(length(input$respicks), 1))
       for (x in input$respicks) {
          if (input$focus == "chr")
-           dat = resl[[x]]@tbl |> dplyr::filter(seqnames == as.character(local(input$chr))) |>
+           dat = resl[[x]]@tbl |> dplyr::filter(seqnames == as.character(local(input$chr))) |> dplyr::arrange(score) |>
                   head(input$nrecs) |> as.data.frame() 
          else if (input$focus == "gene") 
            dat = resl[[x]]@tbl |> dplyr::filter(molecular_trait_id == as.character(local(input$gene))) |>

@@ -9,7 +9,7 @@
 #' field from genelocs argument.
 #' @examples
 #' if (interactive()){
-#' utils::data("gloc_hg19", package = "GGIpack")
+#' utils::data("gloc_hg19", package = "GGIpack2")
 #' con = DBI::dbConnect(duckdb::duckdb())
 #' abrigapp(con, gloc_hg19)
 #' }
@@ -17,8 +17,8 @@
 abrigapp = function(con, genelocs) {
  pfiles <<- ABRIGparquet_paths()
  bpPadding = 30000
- utils::data("geneNames", package = "GGIpack")
- patquetTableLoc <-system.file("extdata","parquetDataTable.csv", package = "GGIpack" )
+ utils::data("geneNames", package = "GGIpack2")
+ patquetTableLoc <-system.file("extdata","parquetDataTable.csv", package = "GGIpack2" )
  patquetTable <- utils::read.csv(patquetTableLoc)
  genomeVersion <- "hg19"
  
@@ -165,7 +165,7 @@ abrigapp = function(con, genelocs) {
                  population data for each of the cell types together thus there is no more choice 
                  for population since there is no way to separate the data anymore. The original
                  data can be found in the following  path on the Nantucket server.",
-               packageVersion("GGIpack") ) 
+               packageVersion("GGIpack2") ) 
              ),
              br(),
              p("/proj/regeps/regep00/studies/ABRIG/analyses/reahs/cis_eqtl_matrixEqtl.Release.15.05.23/"),

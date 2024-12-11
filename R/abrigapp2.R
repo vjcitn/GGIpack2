@@ -8,8 +8,8 @@
 #' options(ask=oldask)
 #' @export
 abrigapp2 = function() {
- data("gloc_hg19", package="GGIpack")
- utils::data("geneNames", package = "GGIpack")
+ data("gloc_hg19", package="GGIpack2")
+ utils::data("geneNames", package = "GGIpack2")
 
 # set up data resources
  con = DBI::dbConnect(duckdb::duckdb())
@@ -92,6 +92,7 @@ names(pfiles) = c("BAL", "BroncEpiBrush", "CD4Stim", "CD4Unstim",
       for (x in input$respicks) {
          if (input$focus == "chr")
            dat = resl[[x]]@tbl |> dplyr::filter(seqnames == as.character(local(input$chr))) |>
+                  dplyr::arrange(score) |>
                   head(input$nrecs) |> as.data.frame() 
          else if (input$focus == "gene") 
            dat = resl[[x]]@tbl |> dplyr::filter(molecular_trait_id == as.character(local(input$gene))) |>

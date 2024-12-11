@@ -30,7 +30,7 @@ ABRIGresource = function(con, tissue, space="hg19", pfiles) {
 #' @examples
 #' con = DBI::dbConnect(duckdb::duckdb())
 #' ll = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
-#' utils::data("gloc_hg19", package = "GGIpack")
+#' utils::data("gloc_hg19", package = "GGIpack2")
 #' kk <- filterByRange(ll, gloc_hg19, "DSP", ggr_field="gene_name")
 #' print(kk)
 #' DBI::dbDisconnect(con)
@@ -48,7 +48,7 @@ filterByRange = function(res, ggr, tag, radius=1e5, ggr_field="gene_name") {
 #' Takes in a path to a data table and coheres the data into the proper format 
 #' @param path The complete path to the DN8 file.
 #' @examples
-#' path = system.file("extdata/Alveolar_Macrophages_IS.MICA_ILMN_3241692.CAU.meta", package="GGIpack")
+#' path = system.file("extdata/Alveolar_Macrophages_IS.MICA_ILMN_3241692.CAU.meta", package="GGIpack2")
 #' head(checkData(path = path))
 #' @return a data set that can be used to graph in JBrowseR.
 #' @export
@@ -98,7 +98,7 @@ makeGWASTrack = function( name="NA", dat) {
 make_data_frame_from_tissue_and_gene = function(con, tissue, gene) {
   # add code to validate tissue and gene
   ll = ABRIGresource( con, tissue , pfiles= ABRIGparquet_paths())
-  utils::data("gloc_hg19", package = "GGIpack")
+  utils::data("gloc_hg19", package = "GGIpack2")
   kk <- filterByRange(ll, gloc_hg19, gene, ggr_field="gene_name")
   tmp = as.data.frame(kk@tbl)
   stopifnot(inherits(tmp, "data.frame"))
@@ -135,7 +135,7 @@ dorounds = function(mydf) {
 #' @param pfiles list of absolute paths to the data for each tissue.
 #' @return A list of data table by type for the given gene.
 #' @examples
-#' utils::data("gloc_hg19", package = "GGIpack")
+#' utils::data("gloc_hg19", package = "GGIpack2")
 #' con = DBI::dbConnect(duckdb::duckdb())
 #' allrefs( con =con, gene = 'DSP', pfiles =ABRIGparquet_paths(), genelocs = gloc_hg19)
 #' DBI::dbDisconnect(con)
