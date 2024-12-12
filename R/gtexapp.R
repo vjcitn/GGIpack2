@@ -9,8 +9,8 @@
 #' @export
 gtexapp = function() {
  data("gloc_hg19", package="GGIpack2")
- data("ensg", package="GGIpack2")
- ensg = ensg[order(names(ensg))]
+ data("newensg", package="GGIpack2")
+ ensg = newensg[order(names(newensg))] # preserve old name
 
  gsyms = names(ensg)
  names(gsyms) = as.character(ensg)
