@@ -2,7 +2,7 @@ Package: GGIpack2
 Title: work with parquet eQTL data resources and define generic genomic interfaces (GGI)
 Description: Define classes and methods and apps related to general genomic
 	annotation in context of eQTL interpretation.
-Version: 0.0.5
+Version: 0.0.6
 Author: Vince Carey
 Depends: R (>= 4.3.0), methods
 Imports: shiny, dplyr,  duckdb, GenomicRanges, DBI,ensembldb, knitr, DT,testthat, IRanges, igvShiny,

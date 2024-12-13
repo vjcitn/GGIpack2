@@ -105,9 +105,12 @@ gtexapp = function() {
          else fulldat = rbind(fulldat, dat)
          }
          fulldat$sym = e2g(fulldat$molecular_trait_id)
-         plotly::ggplotly(ggplot2::ggplot(data=fulldat, ggplot2::aes(x=start, y=-log10(score),
-              text=sym)) + 
-              ggplot2::geom_point() + ggplot2::facet_grid(tissue~.))
+         theplot = ggplot2::ggplot(data=fulldat, 
+                    ggplot2::aes(x=start, y=-log10(score),
+              text=sym)) + ggplot2::geom_point() 
+         ntiss = length(unique(fulldat$tissue))
+         if (ntiss > 1) theplot = theplot + ggplot2::facet_grid(tissue~.)
+         plotly::ggplotly(theplot)
       })
   # communicate selected components to UI
     output$all = renderUI({

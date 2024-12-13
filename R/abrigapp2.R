@@ -88,7 +88,6 @@ names(pfiles) = c("BAL", "BroncEpiBrush", "CD4Stim", "CD4Unstim",
       }
       )
     output$theplot = plotly::renderPlotly({ 
-#      par(mfrow=c(length(input$respicks), 1))
       thedat = NULL
       for (x in input$respicks) {
          if (input$focus == "chr")
@@ -104,20 +103,20 @@ names(pfiles) = c("BAL", "BroncEpiBrush", "CD4Stim", "CD4Unstim",
          dat$tissue = x
          if (is.null(thedat)) thedat = dat
          else thedat = rbind(thedat, dat)
-         print(tail(thedat))
          }
          plotly::ggplotly(ggplot2::ggplot(data=thedat, 
                   ggplot2::aes(x=start, y=-log10(score))) +
               ggplot2::geom_point() + ggplot2::facet_grid(tissue~.))
-         #plot(dat$start, -log10(dat$score), main=x)
       })
-#      }, height=800L)
   # communicate selected components to UI
     output$all = renderUI({
      o = lapply(c(input$respicks, "viz"), function(x) {
               if (x != "viz") tabPanel(x, DT::dataTableOutput(x))
               else tabPanel("viz", plotly::plotlyOutput("theplot"))
               })
+     o = c(o, list(tabPanel("about", helpText(sprintf("(GGIpack2 %s) This is an app demonstrating organization of eQTL data with parquet and duckdb", packageVersion("GGIpack2"))))))
+     names(o) = NULL
+
      do.call(tabsetPanel, o)
     })
    }
