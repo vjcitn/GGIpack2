@@ -1,0 +1,6 @@
+.gitignore
+Jenkinsfile
+*.Rproj
+README.md
+conda.yaml
+.project
