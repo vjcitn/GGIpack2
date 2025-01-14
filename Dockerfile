@@ -54,10 +54,10 @@ RUN --mount=type=cache,id=apt_cache,target=/var/cache/apt,sharing=locked \
 #RUN Rscript --vanilla -e 'pak::cache_summary()'
 # then clean pak cache...?
 
-COPY --exclude=shiny/ --exclude=shiny.R . /tmp/GGIpack2
+COPY --exclude=test_path/ --exclude=test_path.R . /tmp/GGIpack2
 WORKDIR /tmp/GGIpack2
 RUN chmod +x install_ggipack2.R
 RUN ./install_ggipack2.R
-COPY shiny/ /tmp/GGIpack2
-COPY shiny.R /tmp/GGIpack2
+COPY test_path/ /tmp/GGIpack2
+COPY test_path.R /tmp/GGIpack2
 
