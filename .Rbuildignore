@@ -1,4 +1,6 @@
-README.md
+.dockerignore
 Jenkinsfile
+^.*\.Rproj$
 conda.yaml
+README.md
 .project
