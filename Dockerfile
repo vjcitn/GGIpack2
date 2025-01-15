@@ -21,4 +21,6 @@ COPY . /tmp/GGIpack2
 WORKDIR /tmp/GGIpack2
 RUN chmod +x install_ggipack2.R
 RUN ./install_ggipack2.R
+RUN chmod +x start_gtexapp.R
 
+ENTRYPOINT [ "./start_gtexapp.R" ]

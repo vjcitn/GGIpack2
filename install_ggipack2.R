@@ -39,3 +39,5 @@ pak::pkg_deps_tree("local::.", upgrade = FALSE, dependencies = TRUE)
 # use devtools build/install instead...?
 message("pkg_install")
 pak::pkg_install("local::.", upgrade = FALSE, dependencies = TRUE)
+
+installed.packages()
