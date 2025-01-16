@@ -23,6 +23,7 @@ distro <- system2('lsb_release', '-sc', stdout = TRUE)
 # ONLY WORKS FOR AMD64
 p3m_binaries <- sprintf("https://packagemanager.posit.co/cran/__linux__/%s/latest", distro)
 
+# seems to understand arm64 and amd64
 r_universe_bioc_binaries <- sprintf('%s/bin/linux/%s/%s', "https://bioc.r-universe.dev", distro, substr(rver, 1, 3))
 
 # save this for later
