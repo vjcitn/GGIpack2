@@ -8,10 +8,14 @@
 
 library(pak)
 
+str(tempdir())
+
 # suppresses missing pillar package message
 options(pak.no_extra_messages = TRUE)
 
 .libPaths()
+
+
 
 rver <- getRversion()
 distro <- system2('lsb_release', '-sc', stdout = TRUE)
@@ -23,7 +27,7 @@ distro <- system2('lsb_release', '-sc', stdout = TRUE)
 # ONLY WORKS FOR AMD64
 p3m_binaries <- sprintf("https://packagemanager.posit.co/cran/__linux__/%s/latest", distro)
 
-# seems to understand arm64 and amd64
+# seems to understand arm64 and amd64, but only R >= 4.4
 r_universe_bioc_binaries <- sprintf('%s/bin/linux/%s/%s', "https://bioc.r-universe.dev", distro, substr(rver, 1, 3))
 
 # save this for later
@@ -55,13 +59,25 @@ if (identical(unname(machine), "aarch64"))
 #pak::repo_add(rspm_binaries = rspm_binaries)
 pak::repo_status()
 
+
+
+
 #message("checking")
 #checkResults <- devtools::check(error_on = c("never"), env_vars = c(`_R_CHECK_TESTS_NLINES_` = '0', `CI` = 'true'))
 message("pkg_deps_tree")
-pak::pkg_deps_tree("local::.", upgrade = FALSE, dependencies = TRUE)
+
+#pak::pkg_deps_tree("local::.", upgrade = FALSE, dependencies = TRUE)
+pak::pkg_deps_tree("cli", upgrade = FALSE, dependencies = TRUE)
 
 # use devtools build/install instead...?
 message("pkg_install")
-pak::pkg_install("local::.", upgrade = FALSE, dependencies = TRUE)
+#pak::pkg_install("local::.", upgrade = FALSE, dependencies = TRUE)
+pak::pkg_install("cli", upgrade = FALSE, dependencies = TRUE)
+
+# only need to run this to make the docker image smaller
+pak::pak_cleanup(force = TRUE)
 
 installed.packages()
+
+# clean up tmpdir, for some reason this needs to be run after installed.packages() is run
+#unlink(tempdir(), recursive = T)
