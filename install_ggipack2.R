@@ -8,14 +8,10 @@
 
 library(pak)
 
-str(tempdir())
-
 # suppresses missing pillar package message
 options(pak.no_extra_messages = TRUE)
 
 .libPaths()
-
-
 
 rver <- getRversion()
 distro <- system2('lsb_release', '-sc', stdout = TRUE)
@@ -66,13 +62,11 @@ pak::repo_status()
 #checkResults <- devtools::check(error_on = c("never"), env_vars = c(`_R_CHECK_TESTS_NLINES_` = '0', `CI` = 'true'))
 message("pkg_deps_tree")
 
-#pak::pkg_deps_tree("local::.", upgrade = FALSE, dependencies = TRUE)
-pak::pkg_deps_tree("cli", upgrade = FALSE, dependencies = TRUE)
+pak::pkg_deps_tree("local::.", upgrade = FALSE, dependencies = TRUE)
 
 # use devtools build/install instead...?
 message("pkg_install")
-#pak::pkg_install("local::.", upgrade = FALSE, dependencies = TRUE)
-pak::pkg_install("cli", upgrade = FALSE, dependencies = TRUE)
+pak::pkg_install("local::.", upgrade = FALSE, dependencies = TRUE)
 
 # only need to run this to make the docker image smaller
 pak::pak_cleanup(force = TRUE)
