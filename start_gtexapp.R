@@ -7,6 +7,6 @@ options(useFancyQuotes=FALSE)
 options(bitmapType="cairo")
 # needed for docker
 options(shiny.port = 8090)
-#needed for docker
+# needed for docker
 options(shiny.host = "0.0.0.0")
 gtexapp()

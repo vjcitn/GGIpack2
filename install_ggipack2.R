@@ -18,18 +18,42 @@ distro <- system2('lsb_release', '-sc', stdout = TRUE)
 
 # so if the ubuntu version is "noble", then rig won't set up the PPPM repo because "unsupported", which is bogus
 # and if the ubuntu distro is *not* "noble", then pak can't find the bioconductor binaries at r-universe, 
-# because r-universe only has the binaries for "noble"
+# because r-universe only has the binaries for "noble" and R 4.4 + 4.5
 # so we add this repo back in, even though rig really should have put it in already
-linux_binaries <- sprintf("https://packagemanager.posit.co/cran/__linux__/%s/latest", distro)
+# ONLY WORKS FOR AMD64
+p3m_binaries <- sprintf("https://packagemanager.posit.co/cran/__linux__/%s/latest", distro)
 
-bioc_binaries <- sprintf('%s/bin/linux/%s/%s', "https://bioc.r-universe.dev", distro, substr(rver, 1, 3))
+# seems to understand arm64 and amd64
+r_universe_bioc_binaries <- sprintf('%s/bin/linux/%s/%s', "https://bioc.r-universe.dev", distro, substr(rver, 1, 3))
 
-# put this back in...?
-#pak::repo_add(r_universe_bioc = "https://bioc.r-universe.dev/") # cran...?
-pak::repo_add(r_universe_bioc_binaries = bioc_binaries)
-pak::repo_add(p3m_retrofit = linux_binaries)
+# save this for later
+#rspm_binaries <- sprintf("https://packagemanager.rstudio.com/cran/__linux__/%s/latest", distro)
+
+# NEED THIS FOR ARM (super duper hardcoded, unofficial, may go away without warning)
+# https://forum.posit.co/t/arm64-binary-packages-for-linux-in-posit-public-package-manager/178514/4
+# https://github.com/r-hub/repos?tab=readme-ov-file#ubuntu-2404--r-release-on-aarch64-ubuntu-2404-aarch64-r44
+github_binaries <- sprintf("https://raw.githubusercontent.com/r-hub/repos/main/ubuntu-24.04-aarch64/%s", substr(rver, 1, 3))
+
+pak::repo_add(r_universe_bioc_binaries = r_universe_bioc_binaries)
+
+machine <- Sys.info()["machine"]
+# "aarch64" or "x86_64"
+
+if (identical(unname(machine), "aarch64"))
+{
+	message("adding repo for aarch64 (arm64) binaries")
+	pak::repo_add(github_binaries = github_binaries)
+} else if (identical(unname(machine), "x86_64"))
+{
+	message("adding repo for x86_64 binaries")
+	pak::repo_add(p3m_binaries = p3m_binaries)
+} else 
+{ 
+	message( paste("unrecognized binary architecture: ", machine, ", enjoy compiling from source"))
+}
+
+#pak::repo_add(rspm_binaries = rspm_binaries)
 pak::repo_status()
-
 
 #message("checking")
 #checkResults <- devtools::check(error_on = c("never"), env_vars = c(`_R_CHECK_TESTS_NLINES_` = '0', `CI` = 'true'))
