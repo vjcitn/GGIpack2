@@ -61,7 +61,7 @@ abrigapp = function(con, genelocs) {
   allCelltypes = reactive({
     req(c(input$gene, con, pfiles, genelocs ))
     mygene = input$gene
-     allData = GGIpack::allrefs( con =con, gene = mygene, pfiles =pfiles, genelocs = genelocs)
+     allData = GGIpack2::allrefs( con =con, gene = mygene, pfiles =pfiles, genelocs = genelocs)
    })#allrefs
   
 
@@ -157,10 +157,10 @@ abrigapp = function(con, genelocs) {
     tabPanel("CD4Unstim", DT::DTOutput("CD4Unstim")),
     tabPanel("AlvMacphage", DT::DTOutput("AlvMacphage")),
     tabPanel("PaxRNA", DT::DTOutput("PaxRNA")),
-    tabPanel("about", helpText(h3("GGIpack Overview")),
+    tabPanel("about", helpText(h3("GGIpack2 Overview")),
              br(),
              p(sprintf(
-               "GGIpack abrigapp version %s.  This app uses parquet files made 
+               "GGIpack2 abrigapp version %s.  This app uses parquet files made 
                  from the abrig  data release on 05/15/2023. This new data release merges the 
                  population data for each of the cell types together thus there is no more choice 
                  for population since there is no way to separate the data anymore. The original

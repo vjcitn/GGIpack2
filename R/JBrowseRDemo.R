@@ -25,7 +25,7 @@
 #    #name = c('feature1', 'feature2')
 #  #)
 #  
-#  path = system.file("extdata/Alveolar_Macrophages_IS.MICA:ILMN_3241692.CAU.meta", package="GGIpack")
+#  path = system.file("extdata/Alveolar_Macrophages_IS.MICA:ILMN_3241692.CAU.meta", package="GGIpack2")
 #  df_origin = utils::read.table(path, header = TRUE)
 #  df <- data.frame(
 #    chrom =df_origin$CHR ,
