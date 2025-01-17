@@ -55,5 +55,5 @@ test_that("Symbol mapping is OK", {
    else ans = gsyms[ind]
    ans
  }
- expect_equal(e2g("ENSG00000073605"), "GSDMB")
+ expect_equal(as.character(e2g("ENSG00000073605")), "GSDMB")
 })
