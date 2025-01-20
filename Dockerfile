@@ -5,7 +5,7 @@
 # FROM ghcr.io/r-lib/rig/ubuntu-24.04
 FROM ubuntu:noble
 
-ARG R_VERSION=4.4.1
+ARG R_VERSION=4.4.2
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV R_CLI_NUM_COLORS=256
@@ -17,7 +17,7 @@ RUN --mount=type=cache,id=apt_cache,target=/var/cache/apt,sharing=locked \
 	rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt update && \
 	apt upgrade -y && \
-	apt install -y lsb-release libcurl4-openssl-dev apt-utils curl build-essential pkg-config qpdf && \
+	apt install -y apt-utils build-essential curl libcurl4-openssl-dev lsb-release pkg-config qpdf && \
 	curl -L https://rig.r-pkg.org/deb/rig.gpg -o /etc/apt/trusted.gpg.d/rig.gpg && \
 	sh -c 'echo "deb http://rig.r-pkg.org/deb rig main" > /etc/apt/sources.list.d/rig.list' && \
 	apt update && \
