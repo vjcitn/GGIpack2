@@ -29,11 +29,14 @@ message("release: ", release)
 message("lsb_id: ", lsb_id)
 message("lsb_desc: ", lsb_desc)
 
-# save this for later
+# save these for later
 #rspm_binaries <- sprintf("https://packagemanager.rstudio.com/cran/__linux__/%s/latest", codename)
+#r_universe_cran_binaries <- sprintf('%s/bin/linux/%s/%s', "https://r-lib.r-universe.dev", codename, rver_short)
 
 # the goldilocks config here is ubuntu noble with r 4.4
-# compensating for pak not seeming to understand ubuntu noble yet
+
+# compensating for pak not seeming to understand ubuntu noble yet, or at least thinking cran doesn't
+# adding cran binary repository locations
 if ( (identical(unname(machine), "aarch64")) 
 	& (identical(unname(tolower(lsb_id)), "ubuntu"))
 	& ((identical(unname(release), "22.04")) | (identical(unname(release), "24.04"))) 
@@ -49,7 +52,7 @@ if ( (identical(unname(machine), "aarch64"))
 		
 } else if (identical(unname(machine), "x86_64"))
 {
-	# unclear what version(s) of r are required
+	# unclear what version(s) of r are required, but this doesn't support aarch64/arm64 binaries
 	message( paste ("adding cran(like) repo for x86_64 (amd64) binaries for:", lsb_id, release, ", r:", rver_short))
 	p3m_cran_binaries <- sprintf("https://packagemanager.posit.co/cran/__linux__/%s/latest", codename)
 	pak::repo_add(p3m_binaries = p3m_cran_binaries)
@@ -59,14 +62,16 @@ if ( (identical(unname(machine), "aarch64"))
 	message( paste("architecture:", machine, ", distro:", lsb_id, release, ", r:", rver_short, "unrecognized for cran binary package availability, compiling cran dependencies from source"))
 }
 
-
+# might be able to use r-universe instead...?
 # seems to understand arm64 and amd64, but only r >= 4.4
+# adding bioconductor binary repository location(s)
 if 		( ((identical(unname(machine), "aarch64")) | (identical(unname(machine), "x86_64")))
 	& 	 ((identical(unname(substr(rver, 1, 3)), "4.4")) | (identical(unname(rver_short), "4.5"))))
-{
+{	
+	# don't think this actually works for aarch64, but probably works for x86_64
 	message( paste("adding bioconductor repo for", machine, "binaries for:", lsb_id, release, ", r:", rver_short))
 	r_universe_bioc_binaries <- sprintf('%s/bin/linux/%s/%s', "https://bioc.r-universe.dev", codename, rver_short)
-	pak::repo_add(r_universe_bioc_binaries = r_universe_bioc_binaries)
+	pak::repo_add(r_universe_bioc_binaries = r_universe_bioc_binaries)	
 	
 } else
 {
@@ -86,6 +91,9 @@ pak::pkg_deps_tree("local::.", upgrade = FALSE, dependencies = TRUE)
 # can i install the package from the source package made by devtools::build?
 message("pkg_install")
 pak::pkg_install("local::.", upgrade = FALSE, dependencies = TRUE)
+
+
+
 
 
 # only need to run this to make the docker image smaller
