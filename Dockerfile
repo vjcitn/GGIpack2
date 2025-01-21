@@ -1,9 +1,9 @@
-#ARG UBUNTU_RELEASE=noble
-#FROM ubuntu:$UBUNTU_RELEASE
+ARG UBUNTU_RELEASE=noble
+FROM ubuntu:$UBUNTU_RELEASE
 
 # might need the latest tag
 # FROM ghcr.io/r-lib/rig/ubuntu-24.04
-FROM ubuntu:noble
+#FROM ubuntu:noble
 
 ARG R_VERSION=4.4.2
 
@@ -35,10 +35,10 @@ RUN --mount=type=cache,id=apt_cache,target=/var/cache/apt,sharing=locked \
 # need to clean /tmp/?
 COPY . /opt/GGIpack2
 WORKDIR /opt/GGIpack2
-RUN chmod +x install_ggipack2.R
+RUN chmod +x install.R
 RUN --mount=type=cache,id=apt_cache,target=/var/cache/apt,sharing=locked \
 	--mount=type=cache,id=apt_lib,target=/var/lib/apt,sharing=locked \
-	./install_ggipack2.R && \
+	./install.R && \
 	rm -rf /tmp/*
 RUN chmod +x start_shinyapp.R
 # cleanup tmp.  i think pak uses its own tmp directory in addition to the session tmp directory?
