@@ -13,8 +13,75 @@ options(pak.no_extra_messages = TRUE)
 
 .libPaths()
 
+
 # config pak repos based on host
-source("https://changit.bwh.harvard.edu/raw/jenkins/standard-pipelines/rekgm-ci-testing/resources/R/CI/pak/config_pak_repos.R?token=GHSAT0AAAAAAAAAAL35ZK5HEAB6TLZBBZNSZ4ZDIAQ")
+# sure, but this token rotates for some reason
+#source("https://changit.bwh.harvard.edu/raw/jenkins/standard-pipelines/rekgm-ci-testing/resources/R/pak/config_pak_repos.R?token=GHSAT0AAAAAAAAAAL35ZK5HEAB6TLZBBZNSZ4ZDIAQ")
+
+rver <- getRversion()
+rver_short <- substr(rver, 1, 3)
+machine <- Sys.info()["machine"]
+# "aarch64" or "x86_64"
+codename <- system2('lsb_release', '-sc', stdout = TRUE)
+release <- system2('lsb_release', '-sr', stdout = TRUE)
+lsb_id <- system2('lsb_release', '-si', stdout = TRUE)
+lsb_desc <- system2('lsb_release', '-sd', stdout = TRUE)
+
+message("rver: ", rver)
+message("machine: ", machine)
+message("codename: ", codename)
+message("release: ", release)
+message("lsb_id: ", lsb_id)
+message("lsb_desc: ", lsb_desc)
+
+# save these for later
+#rspm_binaries <- sprintf("https://packagemanager.rstudio.com/cran/__linux__/%s/latest", codename)
+#r_universe_cran_binaries <- sprintf('%s/bin/linux/%s/%s', "https://r-lib.r-universe.dev", codename, rver_short)
+
+# the goldilocks config here is ubuntu noble with r 4.4
+
+# compensating for pak not seeming to understand ubuntu noble yet, or at least thinking cran doesn't
+# adding cran binary repository locations
+if ( (identical(unname(machine), "aarch64")) 
+	& (identical(unname(tolower(lsb_id)), "ubuntu"))
+	& ((identical(unname(release), "22.04")) | (identical(unname(release), "24.04"))) 
+	& (identical(unname(rver_short), "4.4")) )
+{	
+	# super duper hardcoded, unofficial, may go away without warning, supports jammy(22.04) and noble (24.04)
+	# https://github.com/r-hub/repos
+	# https://forum.posit.co/t/arm64-binary-packages-for-linux-in-posit-public-package-manager/178514/4
+	# https://github.com/r-hub/repos?tab=readme-ov-file#ubuntu-2404--r-release-on-aarch64-ubuntu-2404-aarch64-r44
+	message( paste("adding cran(like) repo for aarch64 (arm64) binaries for:", lsb_id, release, ", r:", rver_short))
+	github_cran_binaries <- sprintf("https://raw.githubusercontent.com/r-hub/repos/main/%s-%s-%s/%s", tolower(lsb_id), release, machine, rver_short)
+	pak::repo_add(github_binaries = github_cran_binaries)
+		
+} else if (identical(unname(machine), "x86_64"))
+{
+	# unclear what version(s) of r are required, but this doesn't support aarch64/arm64 binaries
+	message( paste ("adding cran(like) repo for x86_64 (amd64) binaries for:", lsb_id, release, ", r:", rver_short))
+	p3m_cran_binaries <- sprintf("https://packagemanager.posit.co/cran/__linux__/%s/latest", codename)
+	pak::repo_add(p3m_binaries = p3m_cran_binaries)
+	
+} else 
+{ 
+	message( paste("architecture:", machine, ", distro:", lsb_id, release, ", r:", rver_short, "unrecognized for cran binary package availability, compiling cran dependencies from source"))
+}
+
+# might be able to use r-universe instead...?
+# seems to understand arm64 and amd64, but only r >= 4.4
+# adding bioconductor binary repository location(s)
+if 		( ((identical(unname(machine), "aarch64")) | (identical(unname(machine), "x86_64")))
+	& 	 ((identical(unname(substr(rver, 1, 3)), "4.4")) | (identical(unname(rver_short), "4.5"))))
+{	
+	# don't think this actually works for aarch64, but probably works for x86_64
+	message( paste("adding bioconductor repo for", machine, "binaries for:", lsb_id, release, ", r:", rver_short))
+	r_universe_bioc_binaries <- sprintf('%s/bin/linux/%s/%s', "https://bioc.r-universe.dev", codename, rver_short)
+	pak::repo_add(r_universe_bioc_binaries = r_universe_bioc_binaries)	
+	
+} else
+{
+	message( paste("architecture:", machine, ", distro:", lsb_id, release, ", r:", rver_short, "unrecognized for bioconductor binary package availability, compiling bioconductor dependencies from source"))
+}
 
 pak::repo_status()
 
@@ -37,7 +104,7 @@ install_results <- pak::pkg_install("local::.", upgrade = FALSE, dependencies = 
 # flag for this
 library(jsonlite)
 
-cat(toJSON(install_results, pretty = TRUE, force = TRUE))
+# cat(toJSON(install_results, pretty = TRUE, force = TRUE))
 
 
 
