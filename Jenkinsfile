@@ -2,6 +2,6 @@
 
 standardBuildAndArchive([ watchThisBranch: true, 
 							rCIDockerImageRVersion: "4.4.2", 
-							rCIDockerImageUbuntuCodename: "noble"
+							rCIDockerImageUbuntuCodename: "noble",
 							rSourceDockerBuildNoCache: false,
 							targetedPlatforms: ["DOCKER"]])
