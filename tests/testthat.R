@@ -1,3 +1,3 @@
-library(GGIpack)
+library(GGIpack2)
 library(testthat)
-test_check("GGIpack")
+test_check("GGIpack2")
