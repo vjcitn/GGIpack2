@@ -4,3 +4,4 @@ Jenkinsfile
 conda.yaml
 README.md
 .project
+support/
