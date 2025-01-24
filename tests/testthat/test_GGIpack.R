@@ -31,8 +31,9 @@ test_that("filterByRange", {
 
 
 test_that("ABRIGresource",
-  skip_on_ci()
-          {BAL_ABRIGresource = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
+ 
+          { skip_on_ci()
+			BAL_ABRIGresource = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
           answerPath <- system.file("extdata", "BAL_ABRIGresource.rds", package = "GGIpack")
           answer <- readRDS(file= answerPath)
           expect_equal(BAL_ABRIGresource, answer)
