@@ -40,7 +40,8 @@ gtexapp = function() {
   ui = fluidPage(
    sidebarLayout(
     sidebarPanel(
-     helpText("using gtex eqtl data"),
+     helpText(sprintf("GGIpack2 version %s", packageVersion("GGIpack2"))),
+     helpText("GTEx eQTL data filtered to marginal p < 0.05"),
      checkboxGroupInput("respicks", "resources",
           choices=names(resl), selected=names(resl)[1]),
      numericInput("nrecs", "nrecs", min=5, max=100000, value=10000), 
@@ -116,13 +117,26 @@ gtexapp = function() {
          if (ntiss > 1) theplot = theplot + ggplot2::facet_grid(tissue~.)
          plotly::ggplotly(theplot)
       })
+    bigtext = sprintf("GGIpack2 version %s", packageVersion("GGIpack2"))
+    output$code = renderText({
+    codetext = '    # Code like this was used
+      ludat = fread(lu) # lu points to an allpairs.txt file
+      library(dplyr)
+      lupl05 = ludat |> dplyr::filter(pval_nominal < 0.05)
+      library(arrow)
+      write_parquet(lupl05, "lupl05.parquet")
+      # parquet files were then placed in https://mghp.osn.xsede.org/bir190004-bucket01/BiocGGIData/
+      # for retrieval and caching by code in GGIpack2'
+    codetext
+    })
+
   # communicate selected components to UI
     output$all = renderUI({
      o = lapply(c(input$respicks, "viz"), function(x) {
               if (x != "viz") tabPanel(x, DT::dataTableOutput(x))
               else tabPanel("viz", plotly::plotlyOutput("theplot"))
               })
-     o = c(o, list(tabPanel("about", helpText("This is an app demonstrating organization of eQTL data with parquet and duckdb"))))
+     o = c(o, list(tabPanel("about", helpText(bigtext), helpText("This is an app demonstrating organization of eQTL data with parquet and duckdb.  Records from version 7 of GTEx were filtered for association p < 0.05 and transformed to parquet."), verbatimTextOutput("code"))))
      names(o) = NULL
      do.call(tabsetPanel, o)
     })
