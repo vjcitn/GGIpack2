@@ -1,7 +1,9 @@
 
 test_that("new file mgt works",{
+
   skip_on_ci()
  library(GGIpack)
+
  lu = ggi_gtex_cache("lungpl05.parquet")
  expect_true(nchar(lu)>0)
 

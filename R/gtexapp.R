@@ -15,9 +15,13 @@ gtexapp = function() {
  gsyms = names(ensg)
  names(gsyms) = as.character(ensg)
  e2g = function(e) {
-   canswap = which(e %in% names(gsyms))
-   e[canswap] = gsyms[canswap]
-   e
+   ind = match(e, names(gsyms))
+   dr = which(is.na(ind))
+   ans = e
+   if (length(dr)>0)
+   ans[-dr] = gsyms[ind[-dr]]
+   else ans = gsyms[ind]
+   ans
  }
 # set up data resources
  con = DBI::dbConnect(duckdb::duckdb())
