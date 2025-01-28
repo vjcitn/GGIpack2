@@ -1,7 +1,6 @@
 #' demo app 2
 #' @rawNamespace import(shiny, except=c(dataTableOutput, renderDataTable))
 #' @rawNamespace import(GenomicRanges, except=c(intersect, union, setdiff))
-#' @import igvShiny
 #' @import DT
 #' @param con a DBI connection
 #' @param genelocs a GRanges instance with gene addresses
@@ -44,6 +43,7 @@ abrigapp = function(con, genelocs) {
  
  
  server = function(input, output, session) {
+  if (!requireNamespace("igvShiny")) stop("install igvShiny to use this code")
   updateSelectizeInput(session, "gene", choices =sort(geneNames),server = TRUE)
    
   output$stuff = renderPrint({
