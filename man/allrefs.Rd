@@ -24,6 +24,7 @@ Get all the datasets from each of the six celltypes in the ABRIG data.
 \examples{
 utils::data("gloc_hg19", package = "GGIpack2")
 con = DBI::dbConnect(duckdb::duckdb())
+options(useFancyQuotes=FALSE)
 allrefs( con =con, gene = 'DSP', pfiles =ABRIGparquet_paths(), genelocs = gloc_hg19)
 DBI::dbDisconnect(con)
 }

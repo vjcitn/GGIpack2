@@ -23,6 +23,7 @@ define constructor for ABRIGresource
 }
 \examples{
 con = DBI::dbConnect(duckdb::duckdb())
+options(useFancyQuotes=FALSE)
 ll = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
 print(ll)
 DBI::dbDisconnect(con)

@@ -6,6 +6,7 @@
 #' @param pfiles list of absolute paths to the data for each tissue. 
 #' @examples
 #' con = DBI::dbConnect(duckdb::duckdb())
+#' options(useFancyQuotes=FALSE)
 #' ll = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
 #' print(ll)
 #' DBI::dbDisconnect(con)
@@ -62,7 +63,6 @@ checkData = function(path){
 
 
 #' make GWASTrack for shiny app. 
-#' @importFrom igvShiny GWASTrack
 #' @param dat the data table exported from the find_data 
 #' @param name the name of the track in the shiny app
 #' @return a gwasTrack read to graph by igvshiny
@@ -77,6 +77,7 @@ checkData = function(path){
 #' makeGWASTrack(dat = nn)
 #' @export
 makeGWASTrack = function( name="NA", dat) {
+  if (!requireNamespace("igvShiny")) stop("install igvShiny to use this function")
   ndat = names(dat)
   pindex = which(ndat == "P")
   bpindex = which(ndat == "BP")
@@ -97,11 +98,14 @@ makeGWASTrack = function( name="NA", dat) {
 #' @export
 make_data_frame_from_tissue_and_gene = function(con, tissue, gene) {
   # add code to validate tissue and gene
+  opts = options(no.readonly=TRUE)
+  options(useFancyQuotes=FALSE)
   ll = ABRIGresource( con, tissue , pfiles= ABRIGparquet_paths())
   utils::data("gloc_hg19", package = "GGIpack2")
   kk <- filterByRange(ll, gloc_hg19, gene, ggr_field="gene_name")
   tmp = as.data.frame(kk@tbl)
   stopifnot(inherits(tmp, "data.frame"))
+  options(opts)
   tmp
 }
 
@@ -137,6 +141,7 @@ dorounds = function(mydf) {
 #' @examples
 #' utils::data("gloc_hg19", package = "GGIpack2")
 #' con = DBI::dbConnect(duckdb::duckdb())
+#' options(useFancyQuotes=FALSE)
 #' allrefs( con =con, gene = 'DSP', pfiles =ABRIGparquet_paths(), genelocs = gloc_hg19)
 #' DBI::dbDisconnect(con)
 #' @export
