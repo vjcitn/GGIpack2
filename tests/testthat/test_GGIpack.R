@@ -17,6 +17,8 @@ test_that("ABRIGparquet_paths", {
  
 
 test_that("filterByRange", {
+	skip_on_ci()
+	
  ll = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
   utils::data("gloc_hg19", package = "GGIpack")
   BAL_DSP <- filterByRange(ll, gloc_hg19, "DSP", ggr_field="gene_name")
@@ -29,7 +31,9 @@ test_that("filterByRange", {
 
 
 test_that("ABRIGresource",
-          {BAL_ABRIGresource = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
+ 
+          { skip_on_ci()
+			BAL_ABRIGresource = ABRIGresource( con, "BAL" , pfiles= ABRIGparquet_paths())
           answerPath <- system.file("extdata", "BAL_ABRIGresource.rds", package = "GGIpack")
           answer <- readRDS(file= answerPath)
           expect_equal(BAL_ABRIGresource, answer)

@@ -1,0 +1,7 @@
+.dockerignore
+Jenkinsfile
+^.*\.Rproj$
+conda.yaml
+README.md
+.project
+support/

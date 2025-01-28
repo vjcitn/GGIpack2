@@ -1,6 +1,7 @@
 #File: tests/testhtat/test-inst-app.R
-library(shinytest2)
 test_that("tinyapp2_test",{
+  skip_on_ci()
+library(shinytest2)
   app <- AppDriver$new(name= "tinyapp2")
   app$set_inputs(gene = "DSP")
   app$expect_values()

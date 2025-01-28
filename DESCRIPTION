@@ -6,10 +6,10 @@ Version: 0.0.6
 Author: Vince Carey
 Depends: R (>= 4.3.0), methods
 Imports: shiny, dplyr,  duckdb, GenomicRanges, DBI,ensembldb, knitr, DT,testthat, IRanges, igvShiny,
-	ggplot2, plotly
+	ggplot2, plotly, BiocFileCache, httr
 Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0
-biocViews: variants
+biocViews:
 VignetteBuilder: knitr
 RoxygenNote: 7.3.2
 Encoding: UTF-8
