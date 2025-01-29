@@ -3,6 +3,7 @@
 
 #' manage a GGI resource which must have start, end, seqnames, space, score
 #' it also can have a tbl element
+#' @import methods
 #' @export
 setClass("ggiResource", slots=c(start="numeric",
  end="numeric", seqnames="ANY", space="ANY",

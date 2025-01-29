@@ -1,4 +1,6 @@
 #' run the app with GTEx lung and whole blood
+#' @import shiny
+#' @import utils
 #' @examples
 #' oldask = options()$ask
 #' if (interactive()) {

@@ -10,10 +10,10 @@ abrigapp2()
 run the app with two abrig resources
 }
 \examples{
-oldask = options()$ask
+oldask <- options()$ask
 if (interactive()) {
-  options(ask=FALSE)
+  options(ask = FALSE)
   abrigapp2()
 }
-options(ask=oldask)
+options(ask = oldask)
 }
