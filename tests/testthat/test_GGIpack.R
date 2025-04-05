@@ -1,5 +1,8 @@
 library(testthat)
 
+# these can only run on channing, should condition on setting of ABRIG_PATHS or something similar
+
+if (FALSE) {
 con = DBI::dbConnect(duckdb::duckdb())
 
 test_that("ABRIGparquet_paths", {
@@ -63,3 +66,4 @@ test_that("Symbol mapping is OK", {
  }
  expect_equal(as.character(e2g("ENSG00000073605")), "GSDMB")
 })
+}

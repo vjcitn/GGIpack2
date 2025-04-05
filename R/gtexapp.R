@@ -11,22 +11,14 @@
 #' @export
 gtexapp = function() {
  data("gloc_hg19", package="GGIpack2")
- data("newensg", package="GGIpack2")
- ensg = newensg[order(names(newensg))] # preserve old name
+ ensg = setup_ens_gnames()
 
  gsyms = names(ensg)
  names(gsyms) = as.character(ensg)
- e2g = function(e) {
-   ind = match(e, names(gsyms))
-   dr = which(is.na(ind))
-   ans = e
-   if (length(dr)>0)
-   ans[-dr] = gsyms[ind[-dr]]
-   else ans = gsyms[ind]
-   ans
- }
+
+
 # set up data resources
- con = DBI::dbConnect(duckdb::duckdb())
+ con = DBI::dbConnect(duckdb::duckdb())  # only closed on stopBtn event
  lungpa = try(ggi_gtex_cache("lungpl05.parquet"))
  if (inherits(lungpa, "try-error") | nchar(lungpa)==0)
    lungpa = file.path(Sys.getenv("GGI_PARQUET_FOLDER"), "lungpl05.parquet")
@@ -79,6 +71,7 @@ gtexapp = function() {
     z = lapply(names(resl), function(x) {
       output[[x]] = 
        DT::renderDataTable({
+#         should use topscores_by but there are issues in getting the filter value cleanly
          if (input$focus == "chr")
            dat =resl[[x]]@tbl |> dplyr::filter(seqnames == as.character(local(input$chr))) |>
                   dplyr::arrange(score) |>
@@ -89,7 +82,7 @@ gtexapp = function() {
          else if (input$focus == "rsid") 
            dat = resl[[x]]@tbl |> dplyr::filter(rsid == as.character(local(input$snp))) |>
                   as.data.frame() 
-         dat$sym = e2g(dat$molecular_trait_id)
+         dat$sym = ens2sym(dat$molecular_trait_id, gsyms)
          dat
        })
       }
@@ -111,10 +104,10 @@ gtexapp = function() {
          if (is.null(fulldat)) fulldat = dat
          else fulldat = rbind(fulldat, dat)
          }
-         fulldat$sym = e2g(fulldat$molecular_trait_id)
+         fulldat$sym = ens2sym(fulldat$molecular_trait_id, gsyms)
          theplot = ggplot2::ggplot(data=fulldat, 
                     ggplot2::aes(x=start, y=-log10(score),
-              text=sym)) + ggplot2::geom_point() 
+              text=sym)) + ggplot2::geom_point() + ggplot2::ggtitle(sprintf("chr %s", fulldat$seqnames[1]))
          ntiss = length(unique(fulldat$tissue))
          if (ntiss > 1) theplot = theplot + ggplot2::facet_grid(tissue~.)
          plotly::ggplotly(theplot)
