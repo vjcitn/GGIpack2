@@ -36,6 +36,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
+<li class="nav-item"><a class="nav-link" href="https://github.com/vjcitn/GGIpack2/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -58,7 +59,7 @@
             
             <h4 data-toc-skip class="date">April 06, 2025</h4>
       
-
+      <small class="dont-index">Source: <a href="https://github.com/vjcitn/GGIpack2/blob/HEAD/vignettes/GGIpack2.Rmd"><code>vignettes/GGIpack2.Rmd</code></a></small>
       <div class="d-none name"><code>GGIpack2.Rmd</code></div>
     </div>
 
@@ -80,7 +81,7 @@
 </h3>
 <p>First define the path to a parquet file. The</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">GGIpack2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/vjcitn/GGIpack2">GGIpack2</a></span><span class="op">)</span></span>
 <span><span class="va">blex</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"parquet"</span>, <span class="st">"testbl.parquet"</span>, package<span class="op">=</span><span class="st">"GGIpack2"</span><span class="op">)</span></span></code></pre></div>
 <p>Second, set up a duckdb connection to facilitate use of SQL-like querying of the data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -127,13 +128,13 @@
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span> <span style="text-decoration: underline;">126</span>113    12</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 2</span> <span style="text-decoration: underline;">115</span>746    11</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">109</span>534    10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">139</span>393    10</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">88</span>236     9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> <span style="text-decoration: underline;">135</span>203     9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">88</span>598     9</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">591</span>531     8</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span> <span style="text-decoration: underline;">602</span>064     8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span> <span style="text-decoration: underline;">139</span>393    10</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> <span style="text-decoration: underline;">109</span>534    10</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">88</span>598     9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">88</span>236     9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span> <span style="text-decoration: underline;">135</span>203     9</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> <span style="text-decoration: underline;">598</span>879     8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">88</span>144     8</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> <span style="text-decoration: underline;">632</span>834     8</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ more rows</span></span></span></code></pre>
 <p>To interpret these multiplicities, it is helpful to know which genes (if any) are near the loci that are reported multiple times. Conversion to GRanges is a good first step.</p>
