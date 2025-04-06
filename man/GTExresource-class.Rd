@@ -3,9 +3,7 @@
 \docType{class}
 \name{GTExresource-class}
 \alias{GTExresource-class}
-\title{GTEx resource is tallored to the  wholeblpl05.parquet and lungpl05.parquet  resources.}
+\title{GTEx resource is tailored to the  wholeblpl05.parquet and lungpl05.parquet  resources.}
 \description{
-GTEx resource is tallored to the  wholeblpl05.parquet and lungpl05.parquet  resources.
-
-GTEx resource is tallored to the  wholeblpl05.parquet and lungpl05.parquet  resources.
+GTEx resource is tailored to the  wholeblpl05.parquet and lungpl05.parquet  resources.
 }

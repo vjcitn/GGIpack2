@@ -1,0 +1,128 @@
+---
+title: "GGIpack2: generic genome interrogation support"
+shorttitle: "outlier dytection methods"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{GGIpack2: generic genome interrogation support}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Introduction
+
+```{r setup,message=FALSE,echo=FALSE}
+suppressWarnings({
+library(GGIpack2)
+library(duckdb)
+library(arrow)
+library(DBI)
+library(dplyr)
+library(EnsDb.Hsapiens.v75)
+library(GenomicRanges)
+library(DT)
+})
+```
+
+This package addresses tasks of integrating and interrogating
+diverse aspects of structural and functional aspects of
+genomes, with initial focus on the genome of _Homo sapiens_.
+
+We will show how to integrate information from GTEx (v7) and
+Ensembl (v75) using resources in this package and in Bioconductor's
+annotation facilities.
+
+# Use with GTEx version 7 extracts
+
+The following example shows how to obtain a slice of
+data from GTEx eQTL data relating SNP genotypes
+to gene expression in whole blood.
+
+The
+package has an example of data on eQTLs based on
+RNA-seq analysis of whole blood samples.
+The example data are 500 records from the GTEx
+v7 summaries, filtered to keep only SNP loci
+for which a test of association of rare
+allele count with some nearby
+gene had nominal p-value less than 0.05.
+
+## Set up database connection and construct the interface
+
+First define the path to a parquet file.  The
+```{r lkparq, message=FALSE}
+library(GGIpack2)
+blex = system.file("parquet", "testbl.parquet", package="GGIpack2")
+```
+
+Second, set up a duckdb connection to facilitate use
+of SQL-like querying of the data.
+
+```{r docon}
+con = DBI::dbConnect(duckdb::duckdb())
+```
+
+Third, use the `GTExresource` constructor to
+create a systematic interface for querying.
+
+```{r dogtr}
+wb = GTExresource(con, tisstag="wholebl", pfile=blex)
+wb
+```
+
+A helper method `getdb` simplifies direct access to the table.
+
+## Explore the data and transform a slice to GRanges
+
+We defined GTExresource to ensure that specific fields are 
+available in the table associated with the object.
+
+```{r lkn}
+all(c("score", "seqnames", "start", "end") %in% colnames(getdb(wb)))
+getdb(wb) |> group_by(seqnames) |> summarise(n=n())
+```
+That result implies that all the addresses are on chromosome 1.
+We can assess multiplicities of  feature 'starts':
+
+```{r lkmult}
+getdb(wb) |> group_by(start) |> summarise(n=n()) |> arrange(desc(n))
+```
+
+To interpret these multiplicities, it is helpful to know which
+genes (if any) are near the loci that are reported multiple times.
+Conversion to GRanges is a good first step.
+
+```{r doconv}
+gr1 = toGRanges(getdb(wb) |> dplyr::filter(start %in% c(126113, 115746)))
+genome(gr1) = "GRCh37"
+gr1[, "molecular_trait_id"]
+```
+
+
+## Integrate with Ensembl annotation
+
+To learn the gene names and biotypes of the molecular traits
+identified above, use EnsDb.Hsapiens.v75 (for GRCh37).
+
+```{r getens,message=FALSE}
+library(EnsDb.Hsapiens.v75)
+g37 = genes(EnsDb.Hsapiens.v75)
+mults = g37[ gr1$molecular_trait_id ]
+dd = as.data.frame(mcols(mults))
+
+datatable(dd)
+```
+
+
+Finally, close the connection.
+
+```{r dodisc}
+DBI::dbDisconnect(con)
+```
+

@@ -23,13 +23,10 @@ setMethod("show", "ABRIGresource", function(object) {
 })
 
 
-#' GTEx resource is tallored to the  wholeblpl05.parquet and lungpl05.parquet  resources.
+#' GTEx resource is tailored to the  wholeblpl05.parquet and lungpl05.parquet  resources.
 #' @export
 setClass("GTExresource", contains="ggiResource")
 
-#' GTEx resource is tallored to the  wholeblpl05.parquet and lungpl05.parquet  resources.
-#' @export
-setClass("GTExresource", contains="ggiResource")
 
 #' constructor for GTEx examples
 #' @param con DBI connection
@@ -56,4 +53,27 @@ GTExresource = function (con, space = "hg19", tisstag, pfile)
             maf, beta, se, seqnames, ref, alt, start, end)
     new("GTExresource", space = space, tbl = ans)
 }
+
+#' present information about a ggiResource tailored to GTEx v7 summaries
+#' @export
+setMethod("show", "GTExresource", function(object) {
+ tb = slot(object, "tbl")
+ co = tb |> count() |> as.data.frame() |> unlist() |> as.numeric()
+ n1 = tb |> head(1) |> as.data.frame()
+ cat(sprintf("GTExresource instance for tissue %s\n", n1$tissue[[1]]))
+ cat(sprintf("  coordinates based on %s\n", slot(object, "space")))
+ cat(sprintf("  num records %d\n", co))
+ cat("table excerpt:\n")
+ print(slot(object, "tbl") |> head(3))
+})
+
+#' simplify access to database 
+#' @export
+setGeneric("getdb", function(x) standardGeneric("getdb"))
+
+#' simplify access to database for GTEx
+#' @export
+setMethod("getdb", "GTExresource", function(x) {
+   slot(x, "tbl")
+})
 
